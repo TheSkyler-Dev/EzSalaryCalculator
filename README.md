@@ -1,2 +1,2 @@
 # EzSalaryCalculator
-A Salary calculator app written in Python (originalöly in Kotlin)
+A Salary calculator app written in Python (originally in Kotlin)
