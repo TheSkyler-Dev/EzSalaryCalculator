@@ -6,13 +6,15 @@ class Workers: #class for workers
     
     @staticmethod
     def workerList(): #list of existing workers
-        workers = [workers("John", 1),
-                    workers("Pjotr", 2),
-                    workers("Hans", 3),
-                    workers("Johan", 4),
-                    workers("Carlito", 5),
-                    workers("Miguel", 6)
-                    ]
+        workers = [
+            Workers("John", 1),
+            Workers("Pjotr", 2),
+            Workers("Hans", 3),
+            Workers("Johan", 4),
+            Workers("Carlito", 5),
+            Workers("Miguel", 6)
+        ]
+        return workers
 
 class GrossPay:
     def __init__(self, hours, rate):
@@ -28,7 +30,15 @@ def main():
     print("Please enter the following information:")
     name = input("Enter the worker's name: ")
     id = int(input("Enter the worker's ID: "))
-    worker = Workers(name, id)
+    
+    # Check if the worker exists in the list
+    workers = Workers.workerList()
+    worker = next((w for w in workers if w.name == name and w.id == id), None)
+    
+    if worker is None:
+        print("Worker not found.")
+        return
+    
     hours = float(input("Enter the number of hours worked: "))
     rate = float(input("Enter the hourly rate: "))
     gross = GrossPay(hours, rate)

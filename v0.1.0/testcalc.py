@@ -1,22 +1,22 @@
 import unittest
-from ezsalcalc import Worker, GrossPay
+from ezsalcalc import Workers, GrossPay
 
 class TestEzSalaryCalculator(unittest.TestCase):
 
     def test_worker_initialization(self):
         # Positive case
-        worker = Worker("John", 1)
+        worker = Workers("John", 1)
         self.assertEqual(worker.name, "John")
         self.assertEqual(worker.id, 1)
         
         # Negative case
         with self.assertRaises(TypeError):
-            Worker("John")  # Missing ID
+            Workers("John")  # Missing ID
         with self.assertRaises(TypeError):
-            Worker()  # Missing name and ID
+            Workers()  # Missing name and ID
 
     def test_worker_list(self):
-        workers = Worker.worker_list()
+        workers = Workers.workerList()
         self.assertEqual(len(workers), 6)
         self.assertEqual(workers[0].name, "John")
         self.assertEqual(workers[1].name, "Pjotr")
@@ -24,13 +24,13 @@ class TestEzSalaryCalculator(unittest.TestCase):
     def test_gross_pay_calculation(self):
         # Positive case
         gross_pay = GrossPay(40, 15)
-        self.assertEqual(gross_pay.calculate_gross_pay(), 600)
+        self.assertEqual(gross_pay.grossPay(), 600)
         
         # Negative case
         gross_pay = GrossPay(0, 15)
-        self.assertEqual(gross_pay.calculate_gross_pay(), 0)
+        self.assertEqual(gross_pay.grossPay(), 0)
         gross_pay = GrossPay(40, 0)
-        self.assertEqual(gross_pay.calculate_gross_pay(), 0)
+        self.assertEqual(gross_pay.grossPay(), 0)
 
     def test_gross_pay_initialization(self):
         # Positive case
