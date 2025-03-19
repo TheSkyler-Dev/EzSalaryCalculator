@@ -1,4 +1,4 @@
-#python version of ezsalcalc :p this is a minimal viuable product
+#python version of ezsalcalc :p this is a minimal viable product
 class Workers: #class for workers
     def __init__(self, name, id): # constructor
         self.name = name
