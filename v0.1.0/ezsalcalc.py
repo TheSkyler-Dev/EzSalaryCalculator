@@ -26,7 +26,7 @@ class GrossPay:
         return self.gross
 
 def main():
-    print("Welcome toi EZ Salary Calculator")
+    print("Welcome to EZ Salary Calculator")
     print("Please enter the following information:")
     name = input("Enter the worker's name: ")
     id = int(input("Enter the worker's ID: "))
