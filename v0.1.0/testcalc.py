@@ -1,6 +1,5 @@
 import unittest
 from string_utils import is_string
-import ezsalcalc
 from ezsalcalc import Workers, GrossPay
 
 class TestEzSalaryCalculator(unittest.TestCase):
