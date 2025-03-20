@@ -1,4 +1,6 @@
 import unittest
+from string_utils import is_string
+import ezsalcalc
 from ezsalcalc import Workers, GrossPay
 
 class TestEzSalaryCalculator(unittest.TestCase):
@@ -44,6 +46,11 @@ class TestEzSalaryCalculator(unittest.TestCase):
             GrossPay(40)  # Missing rate
         with self.assertRaises(TypeError):
             GrossPay()  # Missing hours and rate
+
+    def test_output(self):
+        #Positive case
+        strValidate = is_string("Worker's name: John\nWorker's ID: 1\nGross pay: 600")
+        self.assertEqual(strValidate, True)
 
 if __name__ == "__main__":
     unittest.main()
