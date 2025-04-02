@@ -1,11 +1,12 @@
 #python version of ezsalcalc :p this is a minimal viable product
-class Workers: #class for workers
-    def __init__(self, name, id): # constructor
+class Workers:  # Class for workers
+    def __init__(self, name, id):  # Constructor
         self.name = name
         self.id = id
-    
+        self.salary = 0  # Initialize salary to 0
+
     @staticmethod
-    def workerList(): #list of existing workers
+    def workerList():  # List of existing workers
         workers = [
             Workers("John", 1),
             Workers("Pjotr", 2),
@@ -21,29 +22,29 @@ class GrossPay:
         self.hours = hours
         self.rate = rate
         self.gross = hours * rate
-    
+
     def grossPay(self):
         return self.gross
 
 def main():
     print("Welcome to EZ Salary Calculator")
-    print("Please enter the following information:")
-    name = input("Enter the worker's name: ")
-    id = int(input("Enter the worker's ID: "))
-    
-    # Check if the worker exists in the list
     workers = Workers.workerList()
-    worker = next((w for w in workers if w.name == name and w.id == id), None)
-    
-    if worker is None:
-        print("Worker not found.")
-        return
-    
-    hours = float(input("Enter the number of hours worked: "))
-    rate = float(input("Enter the hourly rate: "))
-    gross = GrossPay(hours, rate)
-    result = f"Worker's name: {worker.name}\nWorker's ID: {worker.id}\nGross pay: {gross.gross}"
-    print(result)
+
+    # Enter hours and rate for each worker
+    for worker in workers:
+        print(f"\nEnter details for {worker.name} (ID: {worker.id}):")
+        hours = float(input("Enter the number of hours worked: "))
+        rate = float(input("Enter the hourly rate: "))
+        gross = GrossPay(hours, rate)
+        worker.salary = gross.grossPay()  # Assign calculated salary to the worker
+
+    # Sort workers by salary in descending order
+    workers.sort(key=lambda w: w.salary, reverse=True)
+
+    # Output the salaries for all workers
+    print("\nSalaries sorted by gross pay:")
+    for worker in workers:
+        print(f"Worker's name: {worker.name}, ID: {worker.id}, Gross pay: {worker.salary}")
 
 if __name__ == "__main__":
     main()
