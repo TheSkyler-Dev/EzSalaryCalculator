@@ -9,6 +9,7 @@ class TestEzSalaryCalculator(unittest.TestCase):
         worker = Workers("John", 1)
         self.assertEqual(worker.name, "John")
         self.assertEqual(worker.id, 1)
+        self.assertEqual(worker.salary, 0)  # Ensure salary is initialized to 0
         
         # Negative case
         with self.assertRaises(TypeError):
@@ -21,6 +22,7 @@ class TestEzSalaryCalculator(unittest.TestCase):
         self.assertEqual(len(workers), 6)
         self.assertEqual(workers[0].name, "John")
         self.assertEqual(workers[1].name, "Pjotr")
+        self.assertTrue(all(worker.salary == 0 for worker in workers))  # Ensure all salaries are 0 initially
 
     def test_gross_pay_calculation(self):
         # Positive case
@@ -45,6 +47,22 @@ class TestEzSalaryCalculator(unittest.TestCase):
             GrossPay(40)  # Missing rate
         with self.assertRaises(TypeError):
             GrossPay()  # Missing hours and rate
+
+    def test_salary_assignment_and_sorting(self):
+        workers = Workers.workerList()
+        
+        # Assign salaries to workers
+        workers[0].salary = GrossPay(40, 15).grossPay()  # John: 600
+        workers[1].salary = GrossPay(35, 20).grossPay()  # Pjotr: 700
+        workers[2].salary = GrossPay(50, 10).grossPay()  # Hans: 500
+        
+        # Sort workers by salary in descending order
+        workers.sort(key=lambda w: w.salary, reverse=True)
+        
+        # Verify sorting
+        self.assertEqual(workers[0].name, "Pjotr")  # Highest salary
+        self.assertEqual(workers[1].name, "John")
+        self.assertEqual(workers[2].name, "Hans")
 
     def test_output(self):
         #Positive case
