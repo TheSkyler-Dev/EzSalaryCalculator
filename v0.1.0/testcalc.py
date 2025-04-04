@@ -1,8 +1,19 @@
 import unittest
-from string_utils import is_string
-from ezsalcalc import Workers, GrossPay
+from unittest.mock import patch
+from ezsalcalc import Workers, WorkerRegistry, HRDepartment, GrossPay
 
 class TestEzSalaryCalculator(unittest.TestCase):
+
+    def setUp(self):
+        # Reset the worker list to its initial state before each test
+        WorkerRegistry._worker_list = [
+            Workers("John", 1),
+            Workers("Pjotr", 2),
+            Workers("Hans", 3),
+            Workers("Johan", 4),
+            Workers("Carlito", 5),
+            Workers("Miguel", 6)
+        ]
 
     def test_worker_initialization(self):
         # Positive case
@@ -18,7 +29,7 @@ class TestEzSalaryCalculator(unittest.TestCase):
             Workers()  # Missing name and ID
 
     def test_worker_list(self):
-        workers = Workers.workerList()
+        workers = WorkerRegistry.workerList()
         self.assertEqual(len(workers), 6)
         self.assertEqual(workers[0].name, "John")
         self.assertEqual(workers[1].name, "Pjotr")
@@ -49,7 +60,7 @@ class TestEzSalaryCalculator(unittest.TestCase):
             GrossPay()  # Missing hours and rate
 
     def test_salary_assignment_and_sorting(self):
-        workers = Workers.workerList()
+        workers = WorkerRegistry.workerList()
         
         # Assign salaries to workers
         workers[0].salary = GrossPay(40, 15).grossPay()  # John: 600
@@ -64,10 +75,22 @@ class TestEzSalaryCalculator(unittest.TestCase):
         self.assertEqual(workers[1].name, "John")
         self.assertEqual(workers[2].name, "Hans")
 
-    def test_output(self):
-        #Positive case
-        strValidate = is_string("Worker's name: John\nWorker's ID: 1\nGross pay: 600")
-        self.assertEqual(strValidate, True)
+    @patch('builtins.input', side_effect=["NewWorker", "7"])
+    def test_add_worker(self, mock_input):
+        # Test adding a worker
+        HRDepartment.addWorker()
+        workers = WorkerRegistry.workerList()
+        self.assertEqual(len(workers), 7)  # Ensure the worker list has increased
+        self.assertEqual(workers[-1].name, "NewWorker")  # Check the last worker's name
+        self.assertEqual(workers[-1].id, 7)  # Check the last worker's ID
+
+    @patch('builtins.input', side_effect=["0"])
+    def test_remove_worker(self, mock_input):
+        # Test removing a worker
+        HRDepartment.removeWorker()
+        workers = WorkerRegistry.workerList()
+        self.assertEqual(len(workers), 5)  # Ensure the worker list has decreased
+        self.assertNotEqual(workers[0].name, "John")  # Ensure the first worker was removed
 
 if __name__ == "__main__":
     unittest.main()
