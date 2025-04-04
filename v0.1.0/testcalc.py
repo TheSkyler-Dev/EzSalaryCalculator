@@ -77,20 +77,30 @@ class TestEzSalaryCalculator(unittest.TestCase):
 
     @patch('builtins.input', side_effect=["NewWorker", "7"])
     def test_add_worker(self, mock_input):
-        # Test adding a worker
+        # Positive case: Test adding a worker
         HRDepartment.addWorker()
         workers = WorkerRegistry.workerList()
         self.assertEqual(len(workers), 7)  # Ensure the worker list has increased
         self.assertEqual(workers[-1].name, "NewWorker")  # Check the last worker's name
         self.assertEqual(workers[-1].id, 7)  # Check the last worker's ID
 
+        # Negative case: Test adding a worker with invalid input
+        with patch('builtins.input', side_effect=["", ""]):  # Empty name and ID
+            with self.assertRaises(ValueError):
+                HRDepartment.addWorker()
+
     @patch('builtins.input', side_effect=["0"])
     def test_remove_worker(self, mock_input):
-        # Test removing a worker
+        # Positive case: Test removing a worker
         HRDepartment.removeWorker()
         workers = WorkerRegistry.workerList()
         self.assertEqual(len(workers), 5)  # Ensure the worker list has decreased
         self.assertNotEqual(workers[0].name, "John")  # Ensure the first worker was removed
+
+        # Negative case: Test removing a worker with invalid input
+        with patch('builtins.input', side_effect=["999"]):  # Non-existent worker ID
+            with self.assertRaises(ValueError):
+                HRDepartment.removeWorker()
 
 if __name__ == "__main__":
     unittest.main()

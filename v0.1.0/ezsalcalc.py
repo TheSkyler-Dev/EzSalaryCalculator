@@ -23,12 +23,16 @@ class HRDepartment:  # HR class
     @staticmethod
     def addWorker():
         # Add worker to WorkerRegistry's list
-        name = input("Enter the new worker's name: ")
-        id = int(input("Enter the new worker's ID: "))
-        WorkerRegistry._worker_list.append(Workers(name, id))  # Add to the correct list
-        print("\nUpdated Worker List:")
-        for worker in WorkerRegistry._worker_list:
-            print(f"{worker.name}, {worker.id}")
+        try:
+            name = input("Enter the new worker's name: ")
+            id = int(input("Enter the new worker's ID: "))
+            WorkerRegistry._worker_list.append(Workers(name, id))  # Add to the correct list
+            print("\nUpdated Worker List:")
+            for worker in WorkerRegistry._worker_list:
+                print(f"{worker.name}, {worker.id}")
+        except ValueError as e:
+            print(f"{e}: Invalid input. Please enter a valid name and numeric ID.")
+            raise
 
     @staticmethod
     def removeWorker():
@@ -38,12 +42,16 @@ class HRDepartment:  # HR class
             print(f"{i}: {worker.name}, {worker.id}")
         
         # Remove a worker by index
-        worker_index = int(input("Enter the index of the worker to remove: "))
-        if 0 <= worker_index < len(WorkerRegistry._worker_list):
-            removed_worker = WorkerRegistry._worker_list.pop(worker_index)
-            print(f"\nRemoved worker: {removed_worker.name}, {removed_worker.id}")
-        else:
-            print("Invalid index. No worker removed.")
+        try:
+            worker_index = int(input("Enter the index of the worker to remove: "))
+            if 0 <= worker_index < len(WorkerRegistry._worker_list):
+                removed_worker = WorkerRegistry._worker_list.pop(worker_index)
+                print(f"\nRemoved worker: {removed_worker.name}, {removed_worker.id}")
+            else:
+                raise ValueError("Invalid index. No worker removed.")
+        except ValueError as e:
+            print(f"{e}: Invalid input. Please enter a numeric index.")
+            raise
         
         # Display the updated worker list
         print("\nUpdated Worker List:")
